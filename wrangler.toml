@@ -1,0 +1,40 @@
+name = "payment-system"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+node_compat = true
+
+# KV Namespaces for session management and idempotency
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "session_store"
+preview_id = "session_store_preview"
+
+[[kv_namespaces]]
+binding = "EVENTS"
+id = "event_store"
+preview_id = "event_store_preview"
+
+[[kv_namespaces]]
+binding = "METRICS"
+id = "metrics_store"
+preview_id = "metrics_store_preview"
+
+# Durable Objects for webhook state management (optional)
+# [[durable_objects.bindings]]
+# name = "WEBHOOK_PROCESSOR"
+# class_name = "WebhookProcessor"
+
+# Environment variables (secrets should be set via: wrangler secret put <NAME>)
+[vars]
+ENVIRONMENT = "production"
+INTERNAL_BACKEND_URL = "https://your-backend.com"
+
+# Secrets to be set via CLI:
+# wrangler secret put PADDLE_API_KEY
+# wrangler secret put PADDLE_WEBHOOK_SECRET
+# wrangler secret put PAYPAL_CLIENT_ID
+# wrangler secret put PAYPAL_CLIENT_SECRET
+# wrangler secret put PAYPAL_WEBHOOK_ID
+# wrangler secret put STRIPE_SECRET_KEY
+# wrangler secret put STRIPE_WEBHOOK_SECRET
+# wrangler secret put INTERNAL_SECRET
