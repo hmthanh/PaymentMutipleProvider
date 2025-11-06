@@ -85,7 +85,7 @@ describe('Webhook Endpoint', () => {
     });
 
     const response = await handleWebhook(request, mockEnv, mockLogger, 'paddle');
-    
+
     // Will fail signature verification but tests the flow
     expect(response.status).toBe(400);
     expect(mockLogger.error).toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('Webhook Endpoint', () => {
 
   it('should use correct webhook endpoints for different providers', async () => {
     const providers = ['paddle', 'paypal'];
-    
+
     for (const provider of providers) {
       const request = new Request(`https://example.com/api/webhook/${provider}`, {
         method: 'POST',
@@ -105,7 +105,7 @@ describe('Webhook Endpoint', () => {
       });
 
       const response = await handleWebhook(request, mockEnv, mockLogger, provider);
-      
+
       // All should fail due to missing signatures, but should process the provider correctly
       expect(response.status).toBe(400);
     }

@@ -47,7 +47,7 @@ export default {
    */
   async scheduled(event, env, ctx) {
     const logger = createLogger({ url: 'cron', method: 'CRON' }, env);
-    
+
     logger.info('Scheduled task running', {
       cron: event.cron,
       scheduledTime: event.scheduledTime,

@@ -11,9 +11,8 @@ export class PaddleAdapter extends ProviderAdapter {
     super(env, logger);
     this.apiKey = env.PADDLE_API_KEY;
     this.webhookSecret = env.PADDLE_WEBHOOK_SECRET;
-    this.baseUrl = env.PADDLE_SANDBOX === 'true' 
-      ? 'https://sandbox-api.paddle.com'
-      : 'https://api.paddle.com';
+    this.baseUrl =
+      env.PADDLE_SANDBOX === 'true' ? 'https://sandbox-api.paddle.com' : 'https://api.paddle.com';
   }
 
   getName() {
@@ -39,7 +38,7 @@ export class PaddleAdapter extends ProviderAdapter {
       const response = await fetch(`${this.baseUrl}/transactions`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -125,11 +124,7 @@ export class PaddleAdapter extends ProviderAdapter {
 
     // Verify signature using HMAC SHA-256
     const signedPayload = `${timestamp}:${payload}`;
-    const isValid = await verifyHmacSignature(
-      signedPayload,
-      receivedSignature,
-      this.webhookSecret
-    );
+    const isValid = await verifyHmacSignature(signedPayload, receivedSignature, this.webhookSecret);
 
     if (!isValid) {
       throw new Error('Invalid Paddle webhook signature');
@@ -155,7 +150,7 @@ export class PaddleAdapter extends ProviderAdapter {
     try {
       const response = await fetch(`${this.baseUrl}/transactions/${sessionId}`, {
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
         },
       });
 
@@ -184,7 +179,7 @@ export class PaddleAdapter extends ProviderAdapter {
       const response = await fetch(`${this.baseUrl}/subscriptions`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -235,19 +230,16 @@ export class PaddleAdapter extends ProviderAdapter {
    */
   async cancelSubscription(subscriptionId) {
     try {
-      const response = await fetch(
-        `${this.baseUrl}/subscriptions/${subscriptionId}/cancel`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            effective_from: 'next_billing_period',
-          }),
-        }
-      );
+      const response = await fetch(`${this.baseUrl}/subscriptions/${subscriptionId}/cancel`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          effective_from: 'next_billing_period',
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`Failed to cancel Paddle subscription: ${response.statusText}`);

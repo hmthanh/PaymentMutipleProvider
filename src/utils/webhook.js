@@ -10,12 +10,7 @@
  * @param {string} algorithm - Hash algorithm (default: SHA-256)
  * @returns {Promise<boolean>}
  */
-export async function verifyHmacSignature(
-  payload,
-  signature,
-  secret,
-  algorithm = 'SHA-256'
-) {
+export async function verifyHmacSignature(payload, signature, secret, algorithm = 'SHA-256') {
   try {
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
@@ -26,20 +21,14 @@ export async function verifyHmacSignature(
       ['sign', 'verify']
     );
 
-    const signatureBuffer = await crypto.subtle.sign(
-      'HMAC',
-      key,
-      encoder.encode(payload)
-    );
+    const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(payload));
 
     const expectedSignature = Array.from(new Uint8Array(signatureBuffer))
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
 
     // Remove any prefix like 'sha256=' if present
-    const cleanSignature = signature.includes('=')
-      ? signature.split('=')[1]
-      : signature;
+    const cleanSignature = signature.includes('=') ? signature.split('=')[1] : signature;
 
     return expectedSignature === cleanSignature;
   } catch (error) {
@@ -87,7 +76,7 @@ export function isTimestampValid(timestamp, toleranceSeconds = 300) {
 export async function parseWebhookPayload(request) {
   try {
     const contentType = request.headers.get('content-type') || '';
-    
+
     if (contentType.includes('application/json')) {
       return await request.json();
     } else if (contentType.includes('application/x-www-form-urlencoded')) {

@@ -7,16 +7,19 @@ This project uses **Vitest** for testing. Tests cover checkout functionality, we
 ## Running Tests
 
 ### Run all tests
+
 ```bash
 npm test
 ```
 
 ### Run tests in watch mode
+
 ```bash
 npm run test:watch
 ```
 
 ### Run tests with coverage
+
 ```bash
 npm run test:coverage
 ```
@@ -150,6 +153,7 @@ beforeEach(() => {
 ### 2. Test Edge Cases
 
 Always test:
+
 - Valid inputs ✅
 - Invalid inputs ❌
 - Missing fields 🚫
@@ -189,10 +193,10 @@ it('should create checkout session', async () => {
   // Arrange
   const payload = { userId: '123', amount: 1000 };
   const mockResponse = { sessionId: 'txn_123' };
-  
+
   // Act
   const result = await createCheckout(payload);
-  
+
   // Assert
   expect(result.sessionId).toBe('txn_123');
 });
@@ -345,12 +349,14 @@ beforeEach(() => {
 ## Test Metrics
 
 Good test coverage targets:
+
 - **Statements**: > 80%
 - **Branches**: > 75%
 - **Functions**: > 80%
 - **Lines**: > 80%
 
 View coverage report:
+
 ```bash
 npm run test:coverage
 open coverage/index.html

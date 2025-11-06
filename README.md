@@ -61,7 +61,7 @@ A production-ready **payment orchestration system** running on **Cloudflare Work
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Cloudflare account (for deployment)
 - Payment provider accounts (Paddle, PayPal, Stripe)
@@ -80,11 +80,13 @@ npm install
 ### Configuration
 
 1. **Copy environment example:**
+
 ```bash
 cp src/config/env.example.json .dev.vars.example
 ```
 
 2. **Set up Wrangler secrets:**
+
 ```bash
 # Paddle
 wrangler secret put PADDLE_API_KEY
@@ -100,6 +102,7 @@ wrangler secret put INTERNAL_SECRET
 ```
 
 3. **Configure KV namespaces:**
+
 ```bash
 wrangler kv:namespace create "SESSIONS"
 wrangler kv:namespace create "EVENTS"
@@ -140,6 +143,7 @@ npm run deploy
 ## 📡 API Endpoints
 
 ### Checkout
+
 ```bash
 POST /api/checkout
 ```
@@ -147,6 +151,7 @@ POST /api/checkout
 Create a checkout session with a payment provider.
 
 ### Webhooks
+
 ```bash
 POST /api/webhook/:provider
 ```
@@ -154,6 +159,7 @@ POST /api/webhook/:provider
 Receive and process webhooks from payment providers.
 
 ### Receipt
+
 ```bash
 GET /api/receipt/:sessionId
 ```
@@ -161,6 +167,7 @@ GET /api/receipt/:sessionId
 Retrieve receipt information for a payment.
 
 ### Subscription
+
 ```bash
 POST /api/subscription
 DELETE /api/subscription/:subscriptionId
@@ -213,6 +220,7 @@ Client → Worker → Provider Adapter → Payment Provider
 ```
 
 Key components:
+
 - **Router**: Routes requests to appropriate handlers
 - **Adapters**: Provider-specific implementations
 - **KV Storage**: Session and event management
@@ -231,6 +239,7 @@ See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
 ## 📊 Monitoring
 
 Built-in logging and metrics:
+
 - Request/response logging
 - Error tracking
 - Webhook processing metrics
@@ -239,6 +248,7 @@ Built-in logging and metrics:
 ## 🧪 Testing
 
 Comprehensive test coverage:
+
 - Unit tests for all adapters
 - Integration tests for API endpoints
 - Webhook verification tests
@@ -248,23 +258,23 @@ See [TEST_GUIDE.md](docs/TEST_GUIDE.md) for testing guidelines.
 
 ## 🛠️ Supported Providers
 
-| Provider | Status | Features |
-|----------|--------|----------|
-| **Paddle** | ✅ Ready | Checkout, Webhooks, Subscriptions |
-| **PayPal** | ✅ Ready | Checkout, Webhooks, Subscriptions |
-| **Stripe** | 🚧 Coming Soon | Placeholder ready |
+| Provider   | Status         | Features                          |
+| ---------- | -------------- | --------------------------------- |
+| **Paddle** | ✅ Ready       | Checkout, Webhooks, Subscriptions |
+| **PayPal** | ✅ Ready       | Checkout, Webhooks, Subscriptions |
+| **Stripe** | 🚧 Coming Soon | Placeholder ready                 |
 
 ## 📝 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PADDLE_API_KEY` | Paddle API key | For Paddle |
-| `PADDLE_WEBHOOK_SECRET` | Paddle webhook secret | For Paddle |
-| `PAYPAL_CLIENT_ID` | PayPal client ID | For PayPal |
-| `PAYPAL_CLIENT_SECRET` | PayPal client secret | For PayPal |
-| `PAYPAL_WEBHOOK_ID` | PayPal webhook ID | For PayPal |
-| `INTERNAL_SECRET` | Internal API secret | Yes |
-| `INTERNAL_BACKEND_URL` | Backend notification URL | Yes |
+| Variable                | Description              | Required   |
+| ----------------------- | ------------------------ | ---------- |
+| `PADDLE_API_KEY`        | Paddle API key           | For Paddle |
+| `PADDLE_WEBHOOK_SECRET` | Paddle webhook secret    | For Paddle |
+| `PAYPAL_CLIENT_ID`      | PayPal client ID         | For PayPal |
+| `PAYPAL_CLIENT_SECRET`  | PayPal client secret     | For PayPal |
+| `PAYPAL_WEBHOOK_ID`     | PayPal webhook ID        | For PayPal |
+| `INTERNAL_SECRET`       | Internal API secret      | Yes        |
+| `INTERNAL_BACKEND_URL`  | Backend notification URL | Yes        |
 
 ## 🤝 Contributing
 
@@ -310,6 +320,7 @@ MIT License - see LICENSE file for details
 ## 📧 Support
 
 For issues or questions:
+
 - Open an issue on GitHub
 - Check the documentation in `/docs`
 - Review test files for examples

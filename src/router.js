@@ -4,7 +4,13 @@
  */
 
 import { getProviderAdapter } from './adapters/providerAdapter.js';
-import { storeSession, getSession, isEventProcessed, markEventProcessed, incrementCounter } from './utils/kv.js';
+import {
+  storeSession,
+  getSession,
+  isEventProcessed,
+  markEventProcessed,
+  incrementCounter,
+} from './utils/kv.js';
 import { successResponse, errorResponse, corsResponse } from './utils/response.js';
 
 /**
@@ -13,16 +19,16 @@ import { successResponse, errorResponse, corsResponse } from './utils/response.j
 export async function handleCheckout(request, env, logger) {
   try {
     const body = await request.json();
-    const { 
-      provider, 
-      userId, 
-      email, 
-      amount, 
-      currency, 
-      productName, 
-      successUrl, 
+    const {
+      provider,
+      userId,
+      email,
+      amount,
+      currency,
+      productName,
+      successUrl,
       cancelUrl,
-      metadata 
+      metadata,
     } = body;
 
     // Validate required fields
@@ -88,7 +94,7 @@ export async function handleWebhook(request, env, logger, provider) {
 
     // Check idempotency - ensure we haven't processed this event before
     const alreadyProcessed = await isEventProcessed(env.EVENTS, provider, event.eventId);
-    
+
     if (alreadyProcessed) {
       logger.info('Event already processed (idempotent)', {
         provider,
@@ -105,24 +111,21 @@ export async function handleWebhook(request, env, logger, provider) {
 
     // Forward to internal backend for persistence and processing
     try {
-      const backendResponse = await fetch(
-        `${env.INTERNAL_BACKEND_URL}/internal/payment/notify`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Internal-Secret': env.INTERNAL_SECRET || '',
-          },
-          body: JSON.stringify({
-            provider,
-            event: event.eventType,
-            eventId: event.eventId,
-            data: event.data,
-            rawPayload: event.rawPayload,
-            timestamp: new Date().toISOString(),
-          }),
-        }
-      );
+      const backendResponse = await fetch(`${env.INTERNAL_BACKEND_URL}/internal/payment/notify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Internal-Secret': env.INTERNAL_SECRET || '',
+        },
+        body: JSON.stringify({
+          provider,
+          event: event.eventType,
+          eventId: event.eventId,
+          data: event.data,
+          rawPayload: event.rawPayload,
+          timestamp: new Date().toISOString(),
+        }),
+      });
 
       if (!backendResponse.ok) {
         logger.warn('Backend notification failed', {
@@ -185,10 +188,13 @@ export async function handleReceipt(request, env, logger, sessionId) {
       provider: session.provider,
     });
 
-    return successResponse({
-      session,
-      providerDetails: providerSession,
-    }, 'Receipt retrieved successfully');
+    return successResponse(
+      {
+        session,
+        providerDetails: providerSession,
+      },
+      'Receipt retrieved successfully'
+    );
   } catch (error) {
     logger.error('Receipt retrieval error', {
       error: error.message,
@@ -204,15 +210,7 @@ export async function handleReceipt(request, env, logger, sessionId) {
 export async function handleSubscriptionCreate(request, env, logger) {
   try {
     const body = await request.json();
-    const { 
-      provider, 
-      userId, 
-      email, 
-      planId, 
-      priceId,
-      successUrl, 
-      cancelUrl 
-    } = body;
+    const { provider, userId, email, planId, priceId, successUrl, cancelUrl } = body;
 
     // Validate required fields
     if (!provider || !userId || !email || (!planId && !priceId)) {
@@ -233,14 +231,19 @@ export async function handleSubscriptionCreate(request, env, logger) {
     });
 
     // Store subscription metadata in KV
-    await storeSession(env.SESSIONS, subscription.subscriptionId, {
-      userId,
-      provider,
-      email,
-      type: 'subscription',
-      planId: planId || priceId,
-      createdAt: new Date().toISOString(),
-    }, 86400 * 30); // 30 days TTL
+    await storeSession(
+      env.SESSIONS,
+      subscription.subscriptionId,
+      {
+        userId,
+        provider,
+        email,
+        type: 'subscription',
+        planId: planId || priceId,
+        createdAt: new Date().toISOString(),
+      },
+      86400 * 30
+    ); // 30 days TTL
 
     logger.info('Subscription created', {
       subscriptionId: subscription.subscriptionId,

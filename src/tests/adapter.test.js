@@ -43,15 +43,15 @@ describe('Provider Adapter Factory', () => {
   it('should be case insensitive for provider names', async () => {
     const adapter1 = await getProviderAdapter('PADDLE', mockEnv, mockLogger);
     const adapter2 = await getProviderAdapter('PayPal', mockEnv, mockLogger);
-    
+
     expect(adapter1).toBeInstanceOf(PaddleAdapter);
     expect(adapter2).toBeInstanceOf(PayPalAdapter);
   });
 
   it('should throw error for unsupported provider', async () => {
-    await expect(
-      getProviderAdapter('unknown', mockEnv, mockLogger)
-    ).rejects.toThrow('Unsupported payment provider: unknown');
+    await expect(getProviderAdapter('unknown', mockEnv, mockLogger)).rejects.toThrow(
+      'Unsupported payment provider: unknown'
+    );
   });
 });
 

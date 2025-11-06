@@ -84,6 +84,7 @@ interface ProviderAdapter {
 ```
 
 **Current Implementations:**
+
 - **PaddleAdapter**: Full implementation for Paddle payments
 - **PayPalAdapter**: Full implementation for PayPal payments
 - **StripeAdapter**: Placeholder for future Stripe implementation

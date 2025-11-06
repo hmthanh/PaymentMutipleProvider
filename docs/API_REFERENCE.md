@@ -19,6 +19,7 @@ Most endpoints require API credentials configured via Wrangler secrets. Webhook 
 Check if the service is running.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -38,6 +39,7 @@ Check if the service is running.
 Create a checkout session with a payment provider.
 
 **Request Body:**
+
 ```json
 {
   "provider": "paddle",
@@ -56,6 +58,7 @@ Create a checkout session with a payment provider.
 ```
 
 **Parameters:**
+
 - `provider` (required): Payment provider - `paddle`, `paypal`, or `stripe`
 - `userId` (required): Your internal user identifier
 - `email` (required): Customer's email address
@@ -67,6 +70,7 @@ Create a checkout session with a payment provider.
 - `metadata` (optional): Additional custom data
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -80,6 +84,7 @@ Create a checkout session with a payment provider.
 ```
 
 **Example Usage:**
+
 ```javascript
 const response = await fetch('https://your-worker.workers.dev/api/checkout', {
   method: 'POST',
@@ -109,14 +114,17 @@ window.location.href = data.data.checkoutUrl;
 Receive and process webhooks from payment providers.
 
 **Path Parameters:**
+
 - `provider`: Payment provider name (`paddle`, `paypal`, or `stripe`)
 
 **Headers (Provider-Specific):**
 
 **Paddle:**
+
 - `paddle-signature`: Webhook signature
 
 **PayPal:**
+
 - `paypal-transmission-id`: Transmission ID
 - `paypal-transmission-time`: Transmission timestamp
 - `paypal-transmission-sig`: Signature
@@ -128,6 +136,7 @@ Receive and process webhooks from payment providers.
 Provider-specific webhook payload (automatically verified)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -151,9 +160,11 @@ The system automatically handles duplicate webhooks. If the same event is sent m
 Retrieve receipt information for a payment session.
 
 **Path Parameters:**
+
 - `sessionId`: The checkout session ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -184,6 +195,7 @@ Retrieve receipt information for a payment session.
 Create a subscription.
 
 **Request Body:**
+
 ```json
 {
   "provider": "paddle",
@@ -196,6 +208,7 @@ Create a subscription.
 ```
 
 **Parameters:**
+
 - `provider` (required): Payment provider
 - `userId` (required): Your internal user identifier
 - `email` (required): Customer's email
@@ -204,6 +217,7 @@ Create a subscription.
 - `cancelUrl` (optional): Cancel redirect URL
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -221,9 +235,11 @@ Create a subscription.
 Cancel a subscription.
 
 **Path Parameters:**
+
 - `subscriptionId`: The subscription ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -252,6 +268,7 @@ All error responses follow this format:
 ```
 
 **Common HTTP Status Codes:**
+
 - `200` - Success
 - `400` - Bad Request (invalid input)
 - `404` - Not Found
@@ -262,6 +279,7 @@ All error responses follow this format:
 ## CORS
 
 All endpoints include CORS headers:
+
 - `Access-Control-Allow-Origin: *`
 - `Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS`
 - `Access-Control-Allow-Headers: Content-Type, Authorization`
@@ -283,6 +301,7 @@ Rate limiting can be implemented using Cloudflare's built-in rate limiting rules
 ### Paddle Events
 
 Common webhook events:
+
 - `transaction.completed` - Payment completed successfully
 - `transaction.updated` - Transaction details updated
 - `subscription.created` - Subscription created
@@ -292,6 +311,7 @@ Common webhook events:
 ### PayPal Events
 
 Common webhook events:
+
 - `PAYMENT.CAPTURE.COMPLETED` - Payment captured
 - `PAYMENT.CAPTURE.DENIED` - Payment denied
 - `BILLING.SUBSCRIPTION.CREATED` - Subscription created
@@ -305,10 +325,12 @@ Common webhook events:
 Use the following test credentials for sandbox environments:
 
 **Paddle Sandbox:**
+
 - Set `PADDLE_SANDBOX=true` in environment variables
 - Use Paddle's sandbox dashboard for test API keys
 
 **PayPal Sandbox:**
+
 - Set `PAYPAL_SANDBOX=true` in environment variables
 - Use PayPal Developer dashboard for sandbox credentials
 
@@ -328,6 +350,7 @@ Use the following test credentials for sandbox environments:
 ## Support
 
 For issues or questions:
+
 1. Check the documentation in `/docs/`
 2. Review test files in `/src/tests/`
 3. Consult provider-specific documentation:

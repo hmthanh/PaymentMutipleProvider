@@ -11,9 +11,10 @@ export class PayPalAdapter extends ProviderAdapter {
     this.clientId = env.PAYPAL_CLIENT_ID;
     this.clientSecret = env.PAYPAL_CLIENT_SECRET;
     this.webhookId = env.PAYPAL_WEBHOOK_ID;
-    this.baseUrl = env.PAYPAL_SANDBOX === 'true'
-      ? 'https://api-m.sandbox.paypal.com'
-      : 'https://api-m.paypal.com';
+    this.baseUrl =
+      env.PAYPAL_SANDBOX === 'true'
+        ? 'https://api-m.sandbox.paypal.com'
+        : 'https://api-m.paypal.com';
     this.accessToken = null;
     this.tokenExpiry = null;
   }
@@ -36,7 +37,7 @@ export class PayPalAdapter extends ProviderAdapter {
       const response = await fetch(`${this.baseUrl}/v1/oauth2/token`, {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${auth}`,
+          Authorization: `Basic ${auth}`,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: 'grant_type=client_credentials',
@@ -81,7 +82,7 @@ export class PayPalAdapter extends ProviderAdapter {
       const response = await fetch(`${this.baseUrl}/v2/checkout/orders`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -170,25 +171,22 @@ export class PayPalAdapter extends ProviderAdapter {
       const token = await this.getAccessToken();
 
       // Verify webhook using PayPal's verification endpoint
-      const response = await fetch(
-        `${this.baseUrl}/v1/notifications/verify-webhook-signature`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            transmission_id: headers['transmission-id'],
-            transmission_time: headers['transmission-time'],
-            cert_url: headers['cert-url'],
-            auth_algo: headers['auth-algo'],
-            transmission_sig: headers['transmission-sig'],
-            webhook_id: webhookId,
-            webhook_event: eventData,
-          }),
-        }
-      );
+      const response = await fetch(`${this.baseUrl}/v1/notifications/verify-webhook-signature`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transmission_id: headers['transmission-id'],
+          transmission_time: headers['transmission-time'],
+          cert_url: headers['cert-url'],
+          auth_algo: headers['auth-algo'],
+          transmission_sig: headers['transmission-sig'],
+          webhook_id: webhookId,
+          webhook_event: eventData,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`PayPal webhook verification failed: ${response.statusText}`);
@@ -228,7 +226,7 @@ export class PayPalAdapter extends ProviderAdapter {
 
       const response = await fetch(`${this.baseUrl}/v2/checkout/orders/${sessionId}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -259,7 +257,7 @@ export class PayPalAdapter extends ProviderAdapter {
       const response = await fetch(`${this.baseUrl}/v1/billing/subscriptions`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -323,7 +321,7 @@ export class PayPalAdapter extends ProviderAdapter {
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({

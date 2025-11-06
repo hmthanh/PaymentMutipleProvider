@@ -60,11 +60,13 @@ npm run preview
 ### Deploy to Cloudflare Pages
 
 1. Build the app:
+
 ```bash
 npm run build
 ```
 
 2. Deploy to Cloudflare Pages:
+
 ```bash
 npx wrangler pages deploy dist
 ```
@@ -74,6 +76,7 @@ Or connect your GitHub repository to Cloudflare Pages for automatic deployments.
 ### Environment Variables
 
 Set in Cloudflare Pages dashboard:
+
 - `VITE_API_URL`: Your worker URL
 
 ## Usage
@@ -115,7 +118,7 @@ You can use the API client in your own Svelte components:
         amount: 1999,
         productName: 'My Product',
       });
-      
+
       window.location.href = result.data.checkoutUrl;
     } catch (error) {
       console.error('Checkout error:', error);
@@ -133,6 +136,7 @@ You can use the API client in your own Svelte components:
 ### App.svelte
 
 Main application component with:
+
 - Provider selection
 - Email input
 - Amount configuration
@@ -142,6 +146,7 @@ Main application component with:
 ### lib/api.js
 
 API client with functions:
+
 - `createCheckoutSession(payload)`
 - `getReceipt(sessionId)`
 - `createSubscription(payload)`
@@ -150,6 +155,7 @@ API client with functions:
 ## Styling
 
 The app uses vanilla CSS with:
+
 - Responsive design
 - Gradient backgrounds
 - Smooth transitions
